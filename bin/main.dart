@@ -27,7 +27,7 @@ int nextId(List<Book> books) =>
 
 ReadStatus? askStatus() {
   for (final s in ReadStatus.values) {
-    print('  ${s.index + 1}. ${s.name}');
+    print('  ${s.index + 1}. ${s.label}');
   }
   final n = int.tryParse(ask('Статус: ') ?? '');
   if (n == null || n < 1 || n > ReadStatus.values.length) return null;
