@@ -49,6 +49,5 @@ class Book implements Storable {
   };
 
   @override
-  String toString() =>
-      '#$id "$title" — ${author.name}, $year [${status.label}]';
+  String toString() => '#$id "$title" — $author, $year [${status.label}]';
 }

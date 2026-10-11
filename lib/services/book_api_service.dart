@@ -46,7 +46,7 @@ class BookApiService {
   Book _fromDoc(Map<String, dynamic> doc) {
     final authors = doc['author_name'] as List?;
     return Book(
-      id: 0, // справжній id призначає меню під час додавання
+      id: 0,
       title: doc['title'] as String? ?? 'Без назви',
       author: Author(name: authors?.firstOrNull as String? ?? 'Невідомий'),
       year: doc['first_publish_year'] as int? ?? 0,

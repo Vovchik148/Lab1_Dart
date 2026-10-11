@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:lab_dart/models/author.dart';
 import 'package:lab_dart/models/book.dart';
@@ -9,7 +10,7 @@ import 'package:lab_dart/services/book_search.dart';
 
 String? ask(String text) {
   stdout.write(text);
-  return stdin.readLineSync();
+  return stdin.readLineSync(encoding: utf8);
 }
 
 void printBooks(List<Book> books) {
@@ -37,6 +38,7 @@ ReadStatus? askStatus() {
 Future<void> addBook(List<Book> books, BookRepository repo) async {
   final title = (ask('Назва: ') ?? '').trim();
   final authorName = (ask('Автор: ') ?? '').trim();
+  final country = (ask('Країна автора (Enter — пропустити): ') ?? '').trim();
   final year = int.tryParse(ask('Рік: ') ?? '');
   final status = askStatus();
   if (title.isEmpty || authorName.isEmpty || year == null || status == null) {
@@ -47,7 +49,10 @@ Future<void> addBook(List<Book> books, BookRepository repo) async {
     Book(
       id: nextId(books),
       title: title,
-      author: Author(name: authorName),
+      author: Author(
+        name: authorName,
+        country: country.isEmpty ? null : country,
+      ),
       year: year,
       status: status,
     ),
@@ -124,6 +129,7 @@ void printMenu() {
 }
 
 Future<void> main() async {
+  stdout.encoding = utf8;
   final repo = BookRepository('data.json');
   final api = BookApiService();
   var books = <Book>[];
@@ -137,7 +143,7 @@ Future<void> main() async {
   while (true) {
     printMenu();
     final choice = ask('Оберіть пункт: ');
-    if (choice == null) break; // кінець вводу
+    if (choice == null) break;
     switch (choice.trim()) {
       case '1':
         printBooks(books);
